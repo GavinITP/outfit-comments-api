@@ -5,6 +5,7 @@ const _ = require("lodash");
 const { v4: uuid } = require("uuid");
 
 const app = express();
+app.use(express.json());
 
 app.get("/outfit", (req, res) => {
   const colors = [
@@ -24,6 +25,14 @@ app.get("/outfit", (req, res) => {
     pants: _.sample(colors),
     shoes: _.sample(colors),
   });
+});
+
+app.post("/comments", (req, res) => {
+  const id = uuid();
+  const content = req.body.content;
+
+  console.log(content);
+  res.sendStatus(201);
 });
 
 app.listen(3000, () => console.log("running"));
