@@ -27,12 +27,21 @@ app.get("/outfit", (req, res) => {
   });
 });
 
-app.post("/comments", (req, res) => {
+app.post("/comments", async (req, res) => {
   const id = uuid();
   const content = req.body.content;
 
-  console.log(content);
-  res.sendStatus(201);
+  if (!content) {
+    res.sendStatus(400);
+    return;
+  }
+
+  await fs.mkdir("data/comments", { recursive: true });
+  await fs.writeFile(`data/comments/${id}.txt`, content);
+
+  res.status(201).json({
+    id: id,
+  });
 });
 
 app.listen(3000, () => console.log("running"));
